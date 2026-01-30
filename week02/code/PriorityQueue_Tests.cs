@@ -5,25 +5,37 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 [TestClass]
 public class PriorityQueueTests
 {
+
     [TestMethod]
-    // Scenario: 
-    // Expected Result: 
-    // Defect(s) Found: 
-    public void TestPriorityQueue_1()
+    public void TestPriorityQueue_RemovesHighestPriority()
     {
-        var priorityQueue = new PriorityQueue();
-        Assert.Fail("Implement the test case and then remove this.");
+        // Scenario: Enqueue multiple items with different priorities.
+        // Expected Result: Dequeue returns the highest priority item.
+        // Defect(s) Found:
+
+        var pq = new PriorityQueue();
+        pq.Enqueue("A", 1);
+        pq.Enqueue("B", 5);
+        pq.Enqueue("C", 3);
+
+        Assert.AreEqual("B", pq.Dequeue());
     }
 
     [TestMethod]
-    // Scenario: 
-    // Expected Result: 
-    // Defect(s) Found: 
-    public void TestPriorityQueue_2()
+    public void TestPriorityQueue_TieUsesFIFO()
     {
-        var priorityQueue = new PriorityQueue();
-        Assert.Fail("Implement the test case and then remove this.");
+        // Scenario: Two items have the same highest priority.
+        // Expected Result: Dequeue removes the one that was enqueued first (FIFO).
+        // Defect(s) Found:
+
+        var pq = new PriorityQueue();
+        pq.Enqueue("A", 5);
+        pq.Enqueue("B", 1);
+        pq.Enqueue("C", 5);
+
+        Assert.AreEqual("A", pq.Dequeue());
     }
+
 
     // Add more test cases as needed below.
 }

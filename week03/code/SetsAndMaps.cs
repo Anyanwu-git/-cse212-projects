@@ -21,8 +21,29 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var seen = new HashSet<string>();
+        var results = new List<string>();
+
+        foreach (var word in words)
+        {
+            // Skip special case like "aa" (same letters)
+            if (word[0] == word[1])
+                continue;
+
+            var reverse = $"{word[1]}{word[0]}";
+
+            // If we've already seen the reverse, we found a symmetric pair
+            if (seen.Contains(reverse))
+            {
+                results.Add($"{word} & {reverse}");
+            }
+            else
+            {
+                seen.Add(word);
+            }
+        }
+
+        return results.ToArray();
     }
 
     /// <summary>
@@ -42,11 +63,19 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3].Trim(); 
+
+            if (degrees.ContainsKey(degree))
+                degrees[degree]++;
+            else
+                degrees[degree] = 1;
         }
 
         return degrees;
     }
+
+
+
 
     /// <summary>
     /// Determine if 'word1' and 'word2' are anagrams.  An anagram
@@ -66,9 +95,39 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        string Normalize(string s) =>
+            new string(s.Where(c => c != ' ')
+                        .Select(char.ToLowerInvariant)
+                        .ToArray());
+
+        var a = Normalize(word1);
+        var b = Normalize(word2);
+
+        if (a.Length != b.Length)
+            return false;
+
+        var counts = new Dictionary<char, int>();
+
+        foreach (var ch in a)
+        {
+            if (counts.ContainsKey(ch)) counts[ch]++;
+            else counts[ch] = 1;
+        }
+
+        foreach (var ch in b)
+        {
+            if (!counts.ContainsKey(ch))
+                return false;
+
+            counts[ch]--;
+
+            if (counts[ch] == 0)
+                counts.Remove(ch);
+        }
+
+        return counts.Count == 0;
     }
+
 
     /// <summary>
     /// This function will read JSON (Javascript Object Notation) data from the 
